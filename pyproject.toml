@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "dtjson"
+version = "1.0.0"
+description = "JSON, but with datetime and timestamp support"
+authors = ["Ken Kinder <ken+github@kkinder.com>"]
+readme = "README.md"
+license = "LICENSE.txt"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: File Formats :: JSON",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/kkinder/dtjson"
+Repository = "https://github.com/kkinder/dtjson.git"
+Issues = "https://github.com/kkinder/dtjson/issues"
