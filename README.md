@@ -19,8 +19,10 @@ Timespans are also similarly support. The interface for using dtjson is nearly i
 
 ## Installation
 
+**NOTE**: PyPi rejected dtjson as a package name, so this is packaged as `json-dt-serializer`.
+
 ```
-pip install dtjson
+pip install json-dt-serializer
 ```
 
 ## Usage details

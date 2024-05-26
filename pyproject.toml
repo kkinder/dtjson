@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dtjson"
+name = "json-dt-serializer"
 version = "1.0.0"
 description = "JSON, but with datetime and timestamp support"
 authors = ["Ken Kinder <ken+github@kkinder.com>"]
@@ -13,6 +13,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Topic :: File Formats :: JSON",
+]
+packages = [
+    {include = "dtjson"}
 ]
 
 [tool.poetry.dependencies]
