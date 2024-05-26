@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "json-dt-serializer"
-version = "1.0.0"
+version = "1.0.1"
 description = "JSON, but with datetime and timestamp support"
 authors = ["Ken Kinder <ken+github@kkinder.com>"]
 readme = "README.md"
