@@ -21,249 +21,44 @@ import json
 import datetime
 
 
-def dump(
-    obj,
-    fp,
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    cls=None,
-    indent=None,
-    separators=None,
-    default=None,
-    sort_keys=False,
-    **kw
-):
+def dump(obj, fp, *args, **kwargs):
     """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object). This uses the dtjson
     simplification for datetime/timespan objects.
 
-    Example usage:
-
-
-
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
-    instead of raising a ``TypeError``.
-
-    If ``ensure_ascii`` is false, then the strings written to ``fp`` can
-    contain non-ASCII characters if they appear in strings contained in
-    ``obj``. Otherwise, all such characters are escaped in JSON strings.
-
-    If ``check_circular`` is false, then the circular reference check
-    for container types will be skipped and a circular reference will
-    result in an ``RecursionError`` (or worse).
-
-    If ``allow_nan`` is false, then it will be a ``ValueError`` to
-    serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``)
-    in strict compliance of the JSON specification, instead of using the
-    JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
-
-    If ``indent`` is a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
-    representation.
-
-    If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` if *indent* is ``None`` and
-    ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
-    you should specify ``(',', ':')`` to eliminate whitespace.
-
-    ``default(obj)`` is a function that should return a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
-
-    If *sort_keys* is true (default: ``False``), then the output of
-    dictionaries will be sorted by key.
-
-    To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
-    ``.default()`` method to serialize additional types), specify it with
-    the ``cls`` kwarg; otherwise ``JSONEncoder`` is used.
+    Additional arguments and keyword arguments are passed through to the underlying json.dump function.
 
     """
-    json.dump(
-        _simplify(obj),
-        fp,
-        skipkeys=skipkeys,
-        ensure_ascii=ensure_ascii,
-        check_circular=check_circular,
-        allow_nan=allow_nan,
-        cls=cls,
-        indent=indent,
-        separators=separators,
-        default=default,
-        sort_keys=sort_keys,
-        **kw
-    )
+    json.dump(_simplify(obj), fp, *args, **kwargs)
 
 
-def dumps(
-    obj,
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    cls=None,
-    indent=None,
-    separators=None,
-    default=None,
-    sort_keys=False,
-    **kw
-):
+def dumps(obj, *args, **kwargs):
     """
     Serialize ``obj`` to a JSON formatted ``str``. This uses the dtjson
     simplification for datetime/timespan objects.
 
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
-    instead of raising a ``TypeError``.
-
-    If ``ensure_ascii`` is false, then the return value can contain non-ASCII
-    characters if they appear in strings contained in ``obj``. Otherwise, all
-    such characters are escaped in JSON strings.
-
-    If ``check_circular`` is false, then the circular reference check
-    for container types will be skipped and a circular reference will
-    result in an ``RecursionError`` (or worse).
-
-    If ``allow_nan`` is false, then it will be a ``ValueError`` to
-    serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``) in
-    strict compliance of the JSON specification, instead of using the
-    JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
-
-    If ``indent`` is a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
-    representation.
-
-    If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` if *indent* is ``None`` and
-    ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
-    you should specify ``(',', ':')`` to eliminate whitespace.
-
-    ``default(obj)`` is a function that should return a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
-
-    If *sort_keys* is true (default: ``False``), then the output of
-    dictionaries will be sorted by key.
-
-    To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
-    ``.default()`` method to serialize additional types), specify it with
-    the ``cls`` kwarg; otherwise ``JSONEncoder`` is used.
+    Additional arguments and keyword arguments are passed through to the underlying json.dumps function.
     """
-    return json.dumps(
-        _simplify(obj),
-        skipkeys=skipkeys,
-        ensure_ascii=ensure_ascii,
-        check_circular=check_circular,
-        allow_nan=allow_nan,
-        cls=cls,
-        indent=indent,
-        separators=separators,
-        default=default,
-        sort_keys=sort_keys,
-        **kw
-    )
+    return json.dumps(_simplify(obj), *args, **kwargs)
 
 
-def load(
-    fp,
-    cls=None,
-    object_hook=None,
-    parse_float=None,
-    parse_int=None,
-    parse_constant=None,
-    object_pairs_hook=None,
-    **kw
-):
+def load(fp, *args, **kwargs):
     """
-    Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
-    a JSON document) to a Python object. This uses the dtjson
-    simplification for datetime/timespan objects.
+    Deserialize ``fp`` (a ``.read()``-supporting file-like object containing a JSON document) to a Python object. This
+    uses the dtjson simplification for datetime/timespan objects.
 
-    ``object_hook`` is an optional function that will be called with the
-    result of any object literal decode (a ``dict``). The return value of
-    ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
-
-    ``object_pairs_hook`` is an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
-    return value of ``object_pairs_hook`` will be used instead of the ``dict``.
-    This feature can be used to implement custom decoders.  If ``object_hook``
-    is also defined, the ``object_pairs_hook`` takes priority.
-
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
-    kwarg; otherwise ``JSONDecoder`` is used.
+    Additional arguments and keyword arguments are passed through to the underlying json.load function.
     """
-    return _complicate(
-        json.load(
-            fp,
-            cls=cls,
-            object_hook=object_hook,
-            parse_float=parse_float,
-            parse_int=parse_int,
-            parse_constant=parse_constant,
-            object_pairs_hook=object_pairs_hook,
-            **kw
-        )
-    )
+    return _complicate(json.load(fp, *args, **kwargs))
 
 
-def loads(
-    s,
-    cls=None,
-    object_hook=None,
-    parse_float=None,
-    parse_int=None,
-    parse_constant=None,
-    object_pairs_hook=None,
-    **kw
-):
-    """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
-    containing a JSON document) to a Python object. This uses the dtjson
-    simplification for datetime/timespan objects.
+def loads(s, *args, **kwargs):
+    """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance containing a JSON document) to a Python
+    object. This uses the dtjson simplification for datetime/timespan objects.
 
-    ``object_hook`` is an optional function that will be called with the
-    result of any object literal decode (a ``dict``). The return value of
-    ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
-
-    ``object_pairs_hook`` is an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
-    return value of ``object_pairs_hook`` will be used instead of the ``dict``.
-    This feature can be used to implement custom decoders.  If ``object_hook``
-    is also defined, the ``object_pairs_hook`` takes priority.
-
-    ``parse_float``, if specified, will be called with the string
-    of every JSON float to be decoded. By default this is equivalent to
-    float(num_str). This can be used to use another datatype or parser
-    for JSON floats (e.g. decimal.Decimal).
-
-    ``parse_int``, if specified, will be called with the string
-    of every JSON int to be decoded. By default this is equivalent to
-    int(num_str). This can be used to use another datatype or parser
-    for JSON integers (e.g. float).
-
-    ``parse_constant``, if specified, will be called with one of the
-    following strings: -Infinity, Infinity, NaN.
-    This can be used to raise an exception if invalid JSON numbers
-    are encountered.
-
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
-    kwarg; otherwise ``JSONDecoder`` is used.
+    Additional arguments and keyword arguments are passed through to the underlying json.loads function.
     """
-    return _complicate(
-        json.loads(
-            s,
-            cls=cls,
-            object_hook=object_hook,
-            parse_float=parse_float,
-            parse_int=parse_int,
-            parse_constant=parse_constant,
-            object_pairs_hook=object_pairs_hook,
-            **kw
-        )
-    )
+    return _complicate(json.loads(s, *args, **kwargs))
 
 
 def _simplify(data):
@@ -280,7 +75,7 @@ def _simplify(data):
         }
     elif isinstance(data, dict):
         return {key: _simplify(value) for key, value in data.items()}
-    elif isinstance(data, list):
+    elif isinstance(data, (list, tuple, set)):
         return [_simplify(item) for item in data]
     else:
         return data

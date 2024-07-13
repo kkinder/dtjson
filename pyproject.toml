@@ -25,7 +25,7 @@ python = "^3.9"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[project.urls]
+[tools.poetry.urls]
 Homepage = "https://github.com/kkinder/dtjson"
 Repository = "https://github.com/kkinder/dtjson.git"
 Issues = "https://github.com/kkinder/dtjson/issues"
